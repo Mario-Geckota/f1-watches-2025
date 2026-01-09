@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>F1 Driver Watches 2025 — Has vs Should Have</title>
+  <style>
+    :root {
+      --bg: #0b0c10;
+      --card: #12141a;
+      --muted: #a8b0bd;
+      --text: #eef1f6;
+      --accent: #6ee7ff;
+      --border: rgba(255,255,255,.08);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 20% 0%, rgba(110,231,255,.08), transparent 55%),
+                  radial-gradient(1000px 700px at 90% 10%, rgba(255,170,110,.07), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      backdrop-filter: blur(10px);
+      background: rgba(11,12,16,.75);
+      border-bottom: 1px solid var(--border);
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 18px 18px; }
+    .title {
+      display: grid;
+      gap: 6px;
+    }
+    h1 { margin: 0; font-size: 22px; letter-spacing: .2px; }
+    .sub { color: var(--muted); font-size: 13px; }
+    .controls {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 10px;
+      align-items: center;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      outline: none;
+    }
+    main { padding: 18px 0 60px; }
+    .team {
+      margin: 18px 0 26px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255,255,255,.02);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .team-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(90deg, rgba(110,231,255,.08), transparent 60%);
+    }
+    .team-header h2 { margin: 0; font-size: 16px; }
+    .pill {
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+    .driver {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .driver:last-child { border-bottom: none; }
+    .driver-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .driver-top h3 { margin: 0; font-size: 15px; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 110px 1.3fr 1fr 160px 140px 1.7fr;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255,255,255,.02);
+      align-items: center;
+    }
+    .type {
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: .3px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      width: fit-content;
+    }
+    .type.has { background: rgba(110,231,255,.07); }
+    .type.should { background: rgba(255,170,110,.07); }
+    .watch { font-weight: 650; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .imgbox {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+    img.thumb {
+      width: 140px;
+      height: 88px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+    }
+    .img-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .btn {
+      display: inline-block;
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 12px;
+      text-align: center;
+    }
+    .btn:hover { background: rgba(255,255,255,.06); }
+    .price { font-variant-numeric: tabular-nums; color: var(--muted); }
+    .summary { color: var(--muted); font-size: 13px; }
+    .headrow {
+      display: grid;
+      grid-template-columns: 110px 1.3fr 1fr 160px 140px 1.7fr;
+      gap: 10px;
+      padding: 10px 12px 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .headrow div { padding: 0 2px; }
+    @media (max-width: 980px) {
+      .row, .headrow {
+        grid-template-columns: 1fr;
+      }
+      img.thumb { width: 100%; height: 180px; }
+      .imgbox { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="title">
+      <h1>F1 Driver Watches 2025 — Has vs Should Have</h1>
+      <div class="sub">A single-page reference that combines your tables with images (where available). Use search to filter by driver, team, or watch.</div>
+    </div>
+    <div class="controls">
+      <input id="search" placeholder="Search (e.g., 'McLaren', 'Daytona', 'Hamilton', 'Moser')…" />
+      <select id="teamFilter">
+        <option value="all">All teams</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap" id="app"></div>
+</main>
+
+<script>
+const DATA = [
+  {
+    "team": "McLaren",
+    "driver": "Lando Norris",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "Richard Mille RM 72-01 / RM 72-0 (Lando Norris editions)",
+        "link": "https://www.richardmille.com/collections/rm-72-01",
+        "price_gbp": "~£250,000–£350,000",
+        "summary": "Norris regularly wears Richard Mille’s RM 72 chronograph, including bespoke editions made for him. The watch’s extreme desirability famously led to it being stolen from him in 2021.",
+        "image": "https://image.thum.io/get/width/800/https://www.richardmille.com/collections/rm-72-01"
+      },
+      {
+        "type": "Should have",
+        "watch": "Swatch Papaya Candy (often listed as ‘Fresh Papaya’ GO105)",
+        "link": "https://watchcharts.com/watch_model/40563-swatch-fresh-papaya-go105/overview",
+        "price_gbp": "~£75",
+        "summary": "A playful, affordable Swatch that reflects McLaren’s papaya colours and Norris’s relaxed confidence as a world champion with nothing left to prove.",
+        "image": "https://image.thum.io/get/width/800/https://watchcharts.com/watch_model/40563-swatch-fresh-papaya-go105/overview"
+      }
+    ]
+  },
+  {
+    "team": "McLaren",
+    "driver": "Oscar Piastri",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "Richard Mille RM 67-02 McLaren Edition",
+        "link": "https://www.gqitalia.it/article/oscar-piastri-richard-mille-rm-67-02",
+        "price_gbp": "~£120,000–£150,000",
+        "summary": "Piastri wears the RM 67-02 McLaren Edition thanks to the team’s Richard Mille partnership, with a skeletonised movement and papaya accents matching the car.",
+        "image": "https://image.thum.io/get/width/800/https://www.gqitalia.it/article/oscar-piastri-richard-mille-rm-67-02"
+      },
+      {
+        "type": "Should have",
+        "watch": "Second Hour Mandala Mk3",
+        "link": "https://www.watchgecko.com/products/second-hour-mandala-mk3-midnight-black",
+        "price_gbp": "~£600–£700",
+        "summary": "A straightforward, unpretentious Australian-made watch that reflects Piastri’s personality and supports Melbourne’s only watchmaker, with optional papaya colouring.",
+        "image": "https://image.thum.io/get/width/800/https://www.watchgecko.com/products/second-hour-mandala-mk3-midnight-black"
+      }
+    ]
+  },
+  {
+    "team": "Mercedes",
+    "driver": "George Russell",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "IWC Pilot’s Watch Chronograph “Petronas” Edition",
+        "link": "https://www.iwc.com",
+        "price_gbp": "~£7,500–£8,500",
+        "summary": "Russell frequently wears the IWC Pilot’s Chronograph Petronas Edition, combining lightweight materials with Mercedes-AMG F1 colours and aviation-inspired design.",
+        "image": "https://image.thum.io/get/width/800/https://www.iwc.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Bamford GMT",
+        "link": "https://www.bamfordwatchdepartment.com",
+        "price_gbp": "~£2,000–£3,500",
+        "summary": "A Bamford GMT suits Russell’s British roots and polished personality, reflecting a modern London-based brand that has carved out its own identity.",
+        "image": "https://image.thum.io/get/width/800/https://www.bamfordwatchdepartment.com"
+      }
+    ]
+  },
+  {
+    "team": "Mercedes",
+    "driver": "Kimi Antonelli",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "IWC Pilot’s Watch Chronograph Top Gun (Black Ceramic)",
+        "link": "https://www.iwc.com",
+        "price_gbp": "~£7,800–£8,800",
+        "summary": "Antonelli wears the IWC Top Gun Chronograph in black ceramic, an imposing and technical watch that contrasts with his status as the youngest driver on the grid.",
+        "image": "https://image.thum.io/get/width/800/https://www.iwc.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Christopher Ward The Twelve",
+        "link": "https://www.christopherward.com",
+        "price_gbp": "~£1,050–£1,250",
+        "summary": "The Twelve is a robust, modern steel sports watch that fits Antonelli’s youth and racing number, offering durability, style, and a personal connection.",
+        "image": "https://image.thum.io/get/width/800/https://www.christopherward.com"
+      }
+    ]
+  },
+  {
+    "team": "Red Bull",
+    "driver": "Max Verstappen",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "TAG Heuer Monaco Jumping Hour",
+        "link": "https://www.tagheuer.com",
+        "price_gbp": "~£9,000–£11,000",
+        "summary": "Verstappen wears a modern jumping-hour Monaco, updating a square racing icon while staying tied to Red Bull’s TAG partnership.",
+        "image": "https://image.thum.io/get/width/800/https://www.tagheuer.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Rolex Cosmograph Daytona (Gold)",
+        "link": "https://www.rolex.com",
+        "price_gbp": "~£35,000–£45,000",
+        "summary": "As a multiple world champion who loves endurance racing, a gold Daytona is the ultimate champion’s chronograph and fits Verstappen’s legacy.",
+        "image": "https://image.thum.io/get/width/800/https://www.rolex.com"
+      }
+    ]
+  },
+  {
+    "team": "Red Bull",
+    "driver": "Yuki Tsunoda",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "TAG Heuer Formula 1 Solargraph",
+        "link": "https://www.tagheuer.com",
+        "price_gbp": "~£1,500–£1,700",
+        "summary": "Tsunoda wears the colourful, robust Solargraph—solar-powered and perfectly suited to his energetic personality.",
+        "image": "https://image.thum.io/get/width/800/https://www.tagheuer.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Cartier Tank Mini (Yellow Gold)",
+        "link": "https://www.cartier.com",
+        "price_gbp": "~£8,000–£10,000",
+        "summary": "Because of his smaller stature, Tsunoda can pull off the tiny Tank Mini, adding classic elegance to the modern F1 paddock.",
+        "image": "https://image.thum.io/get/width/800/https://www.cartier.com"
+      }
+    ]
+  },
+  {
+    "team": "Ferrari",
+    "driver": "Charles Leclerc",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "Richard Mille RM 67-02 Leclerc Edition",
+        "link": "https://www.richardmille.com/collections/rm-67-02",
+        "price_gbp": "~£120,000–£150,000",
+        "summary": "Leclerc is one of the most watch-savvy drivers and wears a bespoke RM 67-02 in Monaco/Ferrari colours, reflecting both heritage and interest in horology.",
+        "image": "https://image.thum.io/get/width/800/https://www.richardmille.com/collections/rm-67-02"
+      },
+      {
+        "type": "Should have",
+        "watch": "Jacob & Co. Opera Godfather Musical Watch",
+        "link": "https://jacobandco.com",
+        "price_gbp": "~£450,000–£550,000",
+        "summary": "As a trained pianist with a taste for extreme high watchmaking, this musical watch suits Leclerc’s love of mechanical spectacle and luxury.",
+        "image": "https://image.thum.io/get/width/800/https://jacobandco.com"
+      }
+    ]
+  },
+  {
+    "team": "Ferrari",
+    "driver": "Lewis Hamilton",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "Richard Mille RM UP-01 Ferrari",
+        "link": "https://www.richardmille.com",
+        "price_gbp": "~£1,500,000–£2,000,000",
+        "summary": "After joining Ferrari, Hamilton leaned into the partnership with the ultra-thin RM UP-01 Ferrari, a showcase of extreme engineering.",
+        "image": "https://image.thum.io/get/width/800/https://www.richardmille.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Heuer Silverstone (vintage)",
+        "link": "https://www.tagheuer.com",
+        "price_gbp": "~£6,000–£8,000",
+        "summary": "With a record nine Silverstone wins, a square Heuer Silverstone is a fitting tribute to Hamilton’s defining circuit and legacy.",
+        "image": "https://image.thum.io/get/width/800/https://www.tagheuer.com"
+      }
+    ]
+  },
+  {
+    "team": "Williams",
+    "driver": "Alex Albon",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "Bremont Williams Edition Chronograph",
+        "link": "https://www.bremont.com",
+        "price_gbp": "~£4,000–£4,500",
+        "summary": "Even without a current Williams watch sponsor, Albon still wears his Bremont Williams Edition, now something of a collector’s piece.",
+        "image": "https://image.thum.io/get/width/800/https://www.bremont.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Citizen Eco-Drive World Time AT",
+        "link": "https://www.citizenwatch.co.uk",
+        "price_gbp": "~£350–£450",
+        "summary": "A solar-powered world-time tool watch that mirrors Albon’s straightforward, travel-ready vibe and suits the global F1 calendar.",
+        "image": "https://image.thum.io/get/width/800/https://www.citizenwatch.co.uk"
+      }
+    ]
+  },
+  {
+    "team": "Williams",
+    "driver": "Carlos Sainz",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "Richard Mille RM 11-03",
+        "link": "https://www.richardmille.com",
+        "price_gbp": "~£180,000–£220,000",
+        "summary": "Sainz wears the complex RM 11-03 and even chased down a thief to recover it after the Italian GP.",
+        "image": "https://image.thum.io/get/width/800/https://www.richardmille.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Fukushima Odaka ‘Chilli Pepper Red’",
+        "link": "https://www.odaka.jp",
+        "price_gbp": "~£250–£300",
+        "summary": "A fun, chilli-themed Japanese watch that matches Sainz’s ‘Chili’ nickname—and is far less tempting to thieves.",
+        "image": "https://image.thum.io/get/width/800/https://www.odaka.jp"
+      }
+    ]
+  },
+  {
+    "team": "Racing Bulls",
+    "driver": "Liam Lawson",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "Tudor Black Bay Chrono Carbon 25",
+        "link": "https://www.tudorwatch.com",
+        "price_gbp": "~£6,500–£7,000",
+        "summary": "Lawson wears the Carbon 25 with a carbon case and racing colours matched to the team’s livery.",
+        "image": "https://image.thum.io/get/width/800/https://www.tudorwatch.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Hamilton Khaki Field (Automatic)",
+        "link": "https://www.hamiltonwatch.com",
+        "price_gbp": "~£650–£850",
+        "summary": "A grounded, classic choice as a nod to Lawson’s admiration for Lewis Hamilton.",
+        "image": "https://image.thum.io/get/width/800/https://www.hamiltonwatch.com"
+      }
+    ]
+  },
+  {
+    "team": "Racing Bulls",
+    "driver": "Isack Hadjar",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "Tudor Black Bay Chrono Carbon 25 (Blue Dial)",
+        "link": "https://www.tudorwatch.com",
+        "price_gbp": "~£6,500–£7,000",
+        "summary": "Hadjar leans toward the blue-dial Carbon 25, aligning with Racing Bulls’ colour palette during his impressive rookie season.",
+        "image": "https://image.thum.io/get/width/800/https://www.tudorwatch.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Zenith Defy Skyline",
+        "link": "https://www.zenith-watches.com",
+        "price_gbp": "~£7,500–£8,500",
+        "summary": "A bold, geometric modern sports watch that matches a rookie who defied expectations.",
+        "image": "https://image.thum.io/get/width/800/https://www.zenith-watches.com"
+      }
+    ]
+  },
+  {
+    "team": "Aston Martin",
+    "driver": "Lance Stroll",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "Girard-Perregaux Laureato Absolute Chronograph Aston Martin F1 Edition",
+        "link": "https://www.girard-perregaux.com",
+        "price_gbp": "~£18,000–£22,000",
+        "summary": "A limited Aston Martin F1 collaboration using motorsport materials and racing-green styling.",
+        "image": "https://image.thum.io/get/width/800/https://www.girard-perregaux.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Casio G-Shock ‘CasiOak’",
+        "link": "https://www.casio.co.uk",
+        "price_gbp": "~£120–£200",
+        "summary": "Given Stroll’s crash reputation, a tough G-Shock—especially the ‘CasiOak’—is the practical, impact-proof pick.",
+        "image": "https://image.thum.io/get/width/800/https://www.casio.co.uk"
+      }
+    ]
+  },
+  {
+    "team": "Aston Martin",
+    "driver": "Fernando Alonso",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "Richard Mille RM 67-02 Fernando Alonso",
+        "link": "https://www.richardmille.com/collections/rm-67-02",
+        "price_gbp": "~£120,000–£150,000",
+        "summary": "Alonso’s RM 67-02 was designed for him, echoing his helmet colours and the Spanish flag with extreme lightweight engineering.",
+        "image": "https://image.thum.io/get/width/800/https://www.richardmille.com/collections/rm-67-02"
+      },
+      {
+        "type": "Should have",
+        "watch": "Patek Philippe Calatrava",
+        "link": "https://www.patek.com",
+        "price_gbp": "~£20,000–£30,000",
+        "summary": "A timeless, refined Calatrava suits an F1 veteran with a legacy—and the idea of passing a watch down a generation.",
+        "image": "https://image.thum.io/get/width/800/https://www.patek.com"
+      }
+    ]
+  },
+  {
+    "team": "Haas",
+    "driver": "Esteban Ocon",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "Bianchet B1.618 Flying Tourbillon Sport GMT",
+        "link": "https://bianchet.com",
+        "price_gbp": "~£120,000–£140,000",
+        "summary": "Ocon’s Bianchet is a carbon/titanium tourbillon with GMT that visually channels the Richard Mille aesthetic.",
+        "image": "https://image.thum.io/get/width/800/https://bianchet.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Franck Muller Crazy Hours",
+        "link": "https://www.franckmuller.com",
+        "price_gbp": "~£25,000–£35,000",
+        "summary": "A perfect match for Ocon’s do-it-his-way reputation: a watch where the hours jump around unpredictably.",
+        "image": "https://image.thum.io/get/width/800/https://www.franckmuller.com"
+      }
+    ]
+  },
+  {
+    "team": "Haas",
+    "driver": "Oliver Bearman",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "Omega Speedmaster Professional",
+        "link": "https://www.omegawatches.com",
+        "price_gbp": "~£6,000–£7,000",
+        "summary": "Bearman rotates Swatches and digitals, but his standout is a classic Speedmaster—modest, fast, and motorsport-adjacent.",
+        "image": "https://image.thum.io/get/width/800/https://www.omegawatches.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Enicar SherpaGraph (Vintage)",
+        "link": "https://www.chrono24.com",
+        "price_gbp": "~£4,000–£6,000",
+        "summary": "A 1960s racing chronograph with real pedigree, suited to a rising British talent tipped for a top seat.",
+        "image": "https://image.thum.io/get/width/800/https://www.chrono24.com"
+      }
+    ]
+  },
+  {
+    "team": "Sauber",
+    "driver": "Nico Hülkenberg",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "Rolex Daytona ‘Tiffany’ 126518LN",
+        "link": "https://www.rolex.com",
+        "price_gbp": "~£38,000–£45,000",
+        "summary": "Hülkenberg’s bold pick is a yellow-gold Daytona with a turquoise ‘Tiffany’ dial—possible because Sauber lacks a watch sponsor.",
+        "image": "https://image.thum.io/get/width/800/https://www.rolex.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Grand Seiko Tentagraph",
+        "link": "https://www.grand-seiko.com",
+        "price_gbp": "~£11,000–£13,000",
+        "summary": "Technical, dependable and understated—like Hülkenberg—this modern Grand Seiko chronograph fits the racer’s racer.",
+        "image": "https://image.thum.io/get/width/800/https://www.grand-seiko.com"
+      }
+    ]
+  },
+  {
+    "team": "Sauber",
+    "driver": "Gabriel Bortoleto",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "Invicta JM Racing 46638",
+        "link": "https://www.invictawatch.com",
+        "price_gbp": "~£250–£350",
+        "summary": "Bortoleto wears an Invicta tied to his F2 team roots, delivering a loud, Richard Mille-style look.",
+        "image": "https://image.thum.io/get/width/800/https://www.invictawatch.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Oris Audi Sport II (DLC Titanium)",
+        "link": "https://www.oris.ch",
+        "price_gbp": "~£3,500–£4,500",
+        "summary": "With Sauber turning into Audi’s factory team, a rare Oris Audi Sport chronograph becomes a fitting future-collectible.",
+        "image": "https://image.thum.io/get/width/800/https://www.oris.ch"
+      }
+    ]
+  },
+  {
+    "team": "Alpine",
+    "driver": "Pierre Gasly",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "H. Moser & Cie. Streamliner Tourbillon Pierre Gasly Edition",
+        "link": "https://www.h-moser.com",
+        "price_gbp": "~£75,000–£85,000",
+        "summary": "Gasly’s Moser is a standout: a red-gold Streamliner tourbillon he helped design, pairing high horology with motorsport cool.",
+        "image": "https://image.thum.io/get/width/800/https://www.h-moser.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "Yema Andretti",
+        "link": "https://en.yema.com",
+        "price_gbp": "~£2,000–£2,500",
+        "summary": "A French driver in a French team suits a French racing watch with historic Andretti-linked motorsport DNA.",
+        "image": "https://image.thum.io/get/width/800/https://en.yema.com"
+      }
+    ]
+  },
+  {
+    "team": "Alpine",
+    "driver": "Franco Colapinto",
+    "entries": [
+      {
+        "type": "Has",
+        "watch": "H. Moser Streamliner Alpine Drivers Edition",
+        "link": "https://www.h-moser.com",
+        "price_gbp": "~£65,000–£75,000",
+        "summary": "A Moser x Alpine collaboration with F1-inspired bridge architecture and a rotor shaped like a wheel rim, co-designed with drivers.",
+        "image": "https://image.thum.io/get/width/800/https://www.h-moser.com"
+      },
+      {
+        "type": "Should have",
+        "watch": "REC Senna 98T/4",
+        "link": "https://www.recwatches.com",
+        "price_gbp": "~£2,500–£3,000",
+        "summary": "Chosen as a Senna tribute due to Colapinto’s resemblance, this limited chronograph uses material from Senna’s 1986 Lotus 98T.",
+        "image": "https://image.thum.io/get/width/800/https://www.recwatches.com"
+      }
+    ]
+  }
+];
+
+function groupByTeam(data) {
+  const map = new Map();
+  for (const item of data) {
+    if (!map.has(item.team)) map.set(item.team, []);
+    map.get(item.team).push(item);
+  }
+  return map;
+}
+
+function makeImageCell(entry) {
+  const q = encodeURIComponent(entry.watch + " watch");
+  const searchUrl = `https://www.google.com/search?tbm=isch&q=${q}`;
+  const img = entry.image ? `<img class="thumb" src="${entry.image}" alt="${entry.watch}">`
+                          : `<img class="thumb" src="data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='600' height='360'><rect width='100%25' height='100%25' fill='%2312141a'/><text x='50%25' y='50%25' fill='%23a8b0bd' font-size='22' text-anchor='middle' dominant-baseline='middle'>No image added yet</text></svg>`)}" alt="No image">`;
+  return `
+    <div class="imgbox">
+      ${img}
+      <div class="img-actions">
+        <a class="btn" href="${searchUrl}" target="_blank" rel="noreferrer">Find images</a>
+        ${entry.image ? `<a class="btn" href="${entry.image}" target="_blank" rel="noreferrer">Open image</a>` : `<span style="font-size:12px;color:var(--muted)">Add URL in data</span>`}
+      </div>
+    </div>`;
+}
+
+function render() {
+  const app = document.getElementById("app");
+  const search = document.getElementById("search").value.trim().toLowerCase();
+  const teamFilter = document.getElementById("teamFilter").value;
+
+  const filtered = DATA.filter(d => teamFilter === "all" ? true : d.team === teamFilter)
+    .filter(d => {
+      if (!search) return true;
+      const blob = (d.team + " " + d.driver + " " + d.entries.map(e => e.type+" "+e.watch+" "+e.summary+" "+e.price_gbp).join(" ")).toLowerCase();
+      return blob.includes(search);
+    });
+
+  const byTeam = groupByTeam(filtered);
+
+  app.innerHTML = "";
+  for (const [team, drivers] of byTeam.entries()) {
+    const teamEl = document.createElement("section");
+    teamEl.className = "team";
+    const count = drivers.length;
+
+    teamEl.innerHTML = `
+      <div class="team-header">
+        <h2>${team}</h2>
+        <div class="pill">${count} driver${count===1?"":"s"}</div>
+      </div>
+    `;
+
+    for (const d of drivers) {
+      const driverEl = document.createElement("div");
+      driverEl.className = "driver";
+
+      driverEl.innerHTML = `
+        <div class="driver-top">
+          <h3>${d.driver}</h3>
+        </div>
+        <div class="headrow" aria-hidden="true">
+          <div>Type</div>
+          <div>Watch name</div>
+          <div>Link</div>
+          <div>Images</div>
+          <div>Price (GBP)</div>
+          <div>Short summary</div>
+        </div>
+        <div class="grid">
+          ${d.entries.map(e => `
+            <div class="row">
+              <div><span class="type ${e.type==="Has"?"has":"should"}">${e.type}</span></div>
+              <div class="watch">${e.watch}</div>
+              <div><a href="${e.link}" target="_blank" rel="noreferrer">Open link</a></div>
+              <div>${makeImageCell(e)}</div>
+              <div class="price">${e.price_gbp}</div>
+              <div class="summary">${e.summary}</div>
+            </div>
+          `).join("")}</div>
+      `;
+      teamEl.appendChild(driverEl);
+    }
+
+    app.appendChild(teamEl);
+  }
+
+  if (!byTeam.size) {
+    app.innerHTML = `<div style="padding:18px;border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.02);color:var(--muted)">No matches. Try a different search term.</div>`;
+  }
+}
+
+function init() {
+  const select = document.getElementById("teamFilter");
+  const teams = Array.from(new Set(DATA.map(d => d.team))).sort((a,b)=>a.localeCompare(b));
+  for (const t of teams) {
+    const opt = document.createElement("option");
+    opt.value = t;
+    opt.textContent = t;
+    select.appendChild(opt);
+  }
+  document.getElementById("search").addEventListener("input", render);
+  document.getElementById("teamFilter").addEventListener("change", render);
+  render();
+}
+
+init();
+</script>
+</body>
+</html>
